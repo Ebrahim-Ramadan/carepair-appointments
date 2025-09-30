@@ -22,7 +22,7 @@ export default function Home() {
                 <circle cx="17" cy="17" r="2" />
               </svg>
             </div>
-            <span className="text-xl font-semibold text-foreground">AutoCare</span>
+            <span className="text-xl font-semibold text-foreground">CarePair</span>
           </div>
           <nav className="hidden items-center gap-6 md:flex">
             <a href="#" className="text-sm font-medium text-muted-foreground hover:text-foreground">
