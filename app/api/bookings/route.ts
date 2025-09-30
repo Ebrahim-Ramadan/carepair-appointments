@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     // Connect to MongoDB
     const client = await clientPromise
-    const db = client.db("car_repair_booking")
+    const db = client.db("car_repair")
 
     // Create booking document
     const booking = {
