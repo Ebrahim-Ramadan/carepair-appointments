@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const client = await clientPromise
-    const db = client.db("car_repair_booking")
+    const db = client.db("car_repair")
 
     // Get all bookings, sorted by date (newest first)
     const bookings = await db.collection("appointments").find({}).sort({ createdAt: -1 }).limit(100).toArray()
