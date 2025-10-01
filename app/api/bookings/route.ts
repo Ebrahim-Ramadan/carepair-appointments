@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Insert booking into database
-    const result = await db.collection("bookings").insertOne(booking)
+    const result = await db.collection("appointments").insertOne(booking)
 
     return NextResponse.json(
       {
@@ -102,7 +102,7 @@ export async function GET(request: NextRequest) {
     const db = client.db("car_repair_booking")
 
     // Get all bookings, sorted by date (newest first)
-    const bookings = await db.collection("bookings").find({}).sort({ createdAt: -1 }).limit(100).toArray()
+    const bookings = await db.collection("appointments").find({}).sort({ createdAt: -1 }).limit(100).toArray()
 
     return NextResponse.json({ bookings }, { status: 200 })
   } catch (error) {
