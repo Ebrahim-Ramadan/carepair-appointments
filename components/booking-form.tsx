@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import * as React from "react"
 import Image from "next/image"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -513,13 +514,14 @@ export function BookingForm() {
                       {bookingData.date ? format(bookingData.date, "PPP") : "Pick a date"}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                  <PopoverContent className="w-auto" align="start">
                     <Calendar
                       mode="single"
                       selected={bookingData.date}
                       onSelect={(date) => updateField("date", date)}
                       disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
                       initialFocus
+                      className="rounded-md"
                     />
                   </PopoverContent>
                 </Popover>

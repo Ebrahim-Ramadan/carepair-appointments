@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import clientPromise from "@/lib/mongodb"
+import { sendBookingConfirmationEmail } from "@/lib/email"
 import {
   validateEmail,
   validatePhone,
@@ -82,11 +83,46 @@ export async function POST(request: NextRequest) {
     // Insert booking into database
     const result = await db.collection("appointments").insertOne(booking)
 
+    // Send confirmation email
+    try {
+      const emailResult = await sendBookingConfirmationEmail({
+        customerName: `${booking.customer.firstName} ${booking.customer.lastName}`,
+        customerEmail: booking.customer.email,
+        phone: booking.customer.phone,
+        vehicle: {
+          year: booking.vehicle.year,
+          make: booking.vehicle.make,
+          model: booking.vehicle.model,
+          licensePlate: booking.vehicle.licensePlate,
+        },
+        service: {
+          type: booking.service.type,
+          date: booking.service.date.toLocaleDateString('en-US', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }),
+          time: booking.service.time,
+          notes: booking.service.notes,
+        },
+        bookingId: result.insertedId.toString(),
+      })
+
+      if (!emailResult.success) {
+        console.error('Failed to send confirmation email:', emailResult.error)
+        // Don't fail the entire request, just log the error
+      }
+    } catch (emailError) {
+      console.error('Email sending error:', emailError)
+      // Don't fail the entire request, just log the error
+    }
+
     return NextResponse.json(
       {
         success: true,
         bookingId: result.insertedId,
-        message: "Booking created successfully",
+        message: "Booking created successfully and confirmation email sent",
       },
       { status: 201 },
     )
