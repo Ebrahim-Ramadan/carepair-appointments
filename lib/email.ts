@@ -37,7 +37,7 @@ export async function sendBookingConfirmationEmail(data: BookingEmailData) {
     const mailOptions = {
       from: `"CarePair Auto Service" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
       to: data.customerEmail,
-      subject: 'Booking Confirmation - CarePair Auto Service',
+      subject: 'Booking Initiated - CarePair Auto Service',
       html: generateBookingConfirmationHTML(data),
       text: generateBookingConfirmationText(data),
       // attachments: [
@@ -65,7 +65,7 @@ function generateBookingConfirmationHTML(data: BookingEmailData): string {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Booking Confirmation</title>
+      <title>Booking Initiated</title>
       <style>
         body {
           font-family: Arial, sans-serif;
@@ -142,13 +142,13 @@ function generateBookingConfirmationHTML(data: BookingEmailData): string {
         <!-- CarePair Logo at Top -->
         <img src="${process.env.NEXTAUTH_URL}/dark-logo.jpg"  alt="CarePair Auto Service" class="logo" style="max-width: 120px; height: auto; margin-bottom: 15px;" />
         <div class="success-icon">✓</div>
-        <h1>Booking Confirmed!</h1>
+        <h1>Booking Done!</h1>
         <p>Your appointment has been successfully scheduled</p>
       </div>
       
       <div class="content">
         <p>Dear ${data.customerName},</p>
-        <p>Thank you for choosing CarePair Auto Service! Your appointment has been confirmed. Here are your booking details:</p>
+        <p>Thank you for choosing CarePair Auto Service! Your appointment has been initiated. Here are your booking details:</p>
         
         <div class="booking-details">
           <h3 style="margin-top: 0; color: #2563eb;">Booking Information</h3>
@@ -215,11 +215,11 @@ function generateBookingConfirmationHTML(data: BookingEmailData): string {
 
 function generateBookingConfirmationText(data: BookingEmailData): string {
   return `
-BOOKING CONFIRMED - CarePair Auto Service
+BOOKING Initiated - CarePair Auto Service
 
 Dear ${data.customerName},
 
-Thank you for choosing CarePair Auto Service! Your appointment has been confirmed.
+Thank you for choosing CarePair Auto Service! Your appointment has been initiated.
 
 BOOKING DETAILS:
 - Booking ID: ${data.bookingId}
