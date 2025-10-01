@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 
+
 // Email configuration - you'll need to set these environment variables
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -31,19 +32,25 @@ export interface BookingEmailData {
 }
 
 export async function sendBookingConfirmationEmail(data: BookingEmailData) {
-  console.log('data:', data);
   
   try {
     const mailOptions = {
-      from: process.env.SMTP_USER,
+      from: `"CarePair Auto Service" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
       to: data.customerEmail,
       subject: 'Booking Confirmation - CarePair Auto Service',
       html: generateBookingConfirmationHTML(data),
       text: generateBookingConfirmationText(data),
+      // attachments: [
+      //   {
+      //     filename: 'logo.jpg',
+      //     path: './public/logo.jpg',
+      //     cid: 'logo' // Content-ID for embedding in HTML
+      //   }
+      // ]
     }
 
     const info = await transporter.sendMail(mailOptions)
-    console.log('Email sent successfully:', info.messageId)
+
     return { success: true, messageId: info.messageId }
   } catch (error) {
     console.error('Failed to send email:', error)
@@ -118,10 +125,22 @@ function generateBookingConfirmationHTML(data: BookingEmailData): string {
           font-size: 24px;
           margin-bottom: 10px;
         }
+        .logo {
+          max-width: 120px;
+          height: auto;
+          margin-bottom: 15px;
+        }
+        .footer-logo {
+          max-width: 80px;
+          height: auto;
+          margin-bottom: 10px;
+        }
       </style>
     </head>
     <body>
       <div class="header">
+        <!-- CarePair Logo at Top -->
+        <img src="${process.env.NEXTAUTH_URL}/dark-logo.jpg"  alt="CarePair Auto Service" class="logo" style="max-width: 120px; height: auto; margin-bottom: 15px;" />
         <div class="success-icon">✓</div>
         <h1>Booking Confirmed!</h1>
         <p>Your appointment has been successfully scheduled</p>
@@ -183,6 +202,8 @@ function generateBookingConfirmationHTML(data: BookingEmailData): string {
       </div>
       
       <div class="footer">
+        <!-- CarePair Logo at Bottom -->
+        <img src="${process.env.NEXTAUTH_URL}/dark-logo.jpg"  alt="CarePair Auto Service" class="footer-logo" style="max-width: 80px; height: auto; margin-bottom: 10px;" />
         <p><strong>CarePair Auto Service</strong></p>
         <p>Expert service, trusted care</p>
         <p>Contact us: info@carepair.com | (555) 123-4567</p>

@@ -9,10 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { format } from "date-fns"
-import { CalendarIcon, Check, Loader2 } from "lucide-react"
+import { Check, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   validateEmail,
@@ -38,7 +35,7 @@ interface BookingData {
 
   // Service Info
   serviceType: string
-  date: Date | undefined
+  date: string
   time: string
   notes: string
 }
@@ -88,12 +85,12 @@ export function BookingForm() {
     year: "",
     licensePlate: "",
     serviceType: "",
-    date: undefined,
+    date: "",
     time: "",
     notes: "",
   })
 
-  const updateField = (field: keyof BookingData, value: string | Date | undefined) => {
+  const updateField = (field: keyof BookingData, value: string) => {
     setBookingData((prev) => ({ ...prev, [field]: value }))
     if (errors[field]) {
       setErrors((prev) => {
@@ -151,6 +148,13 @@ export function BookingForm() {
 
     if (!bookingData.date) {
       newErrors.date = "Date is required"
+    } else {
+      const selectedDate = new Date(bookingData.date)
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+      if (selectedDate < today) {
+        newErrors.date = "Date cannot be in the past"
+      }
     }
 
     if (!bookingData.time) {
@@ -189,7 +193,7 @@ export function BookingForm() {
         },
         body: JSON.stringify({
           ...bookingData,
-          date: bookingData.date?.toISOString(),
+          date: bookingData.date ? new Date(bookingData.date).toISOString() : null,
         }),
       })
 
@@ -218,7 +222,7 @@ export function BookingForm() {
       year: "",
       licensePlate: "",
       serviceType: "",
-      date: undefined,
+      date: "",
       time: "",
       notes: "",
     })
@@ -270,7 +274,12 @@ export function BookingForm() {
               <div>
                 <p className="font-medium text-foreground">Date & Time</p>
                 <p className="text-muted-foreground">
-                  {bookingData.date && format(bookingData.date, "MMM dd, yyyy")} at {bookingData.time}
+                  {bookingData.date && new Date(bookingData.date).toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })} at {bookingData.time}
                 </p>
               </div>
             </div>
@@ -499,32 +508,15 @@ export function BookingForm() {
 
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
-                <Label>Preferred Date</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        !bookingData.date && "text-muted-foreground",
-                        errors.date && "border-destructive",
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {bookingData.date ? format(bookingData.date, "PPP") : "Pick a date"}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={bookingData.date}
-                      onSelect={(date) => updateField("date", date)}
-                      disabled={(date) => date < new Date() || date < new Date("1900-01-01")}
-                      initialFocus
-                      className="rounded-md"
-                    />
-                  </PopoverContent>
-                </Popover>
+                <Label htmlFor="date">Preferred Date</Label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={bookingData.date}
+                  onChange={(e) => updateField("date", e.target.value)}
+                  min={new Date().toISOString().split('T')[0]}
+                  className={errors.date ? "border-destructive" : ""}
+                />
                 {errors.date && <p className="text-sm text-destructive">{errors.date}</p>}
               </div>
 
