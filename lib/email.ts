@@ -31,9 +31,11 @@ export interface BookingEmailData {
 }
 
 export async function sendBookingConfirmationEmail(data: BookingEmailData) {
+  console.log('data:', data);
+  
   try {
     const mailOptions = {
-      from: `"CarePair Auto Service" <${process.env.SMTP_FROM || process.env.SMTP_USER}>`,
+      from: process.env.SMTP_USER,
       to: data.customerEmail,
       subject: 'Booking Confirmation - CarePair Auto Service',
       html: generateBookingConfirmationHTML(data),
