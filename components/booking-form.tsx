@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -395,6 +396,16 @@ export function BookingForm() {
             <CardDescription>Tell us about your vehicle</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            {/* Car Diagram Visual */}
+            <div className="flex justify-center py-4">
+              <Image
+                src="/car-diagram.png"
+                alt="Car Service Diagram"
+                width={300}
+                height={200}
+                className="object-contain rounded-lg"
+              />
+            </div>
             <div className="grid gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="make">Make</Label>
