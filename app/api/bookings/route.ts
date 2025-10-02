@@ -32,14 +32,21 @@ export async function POST(request: NextRequest) {
     const makeError = validateRequired(body.make, "Make")
     if (makeError) errors.make = makeError
 
-    const modelError = validateRequired(body.model, "Model")
-    if (modelError) errors.model = modelError
+    // Only validate optional fields if they are provided
+    if (body.model && body.model.trim() !== "") {
+      const modelError = validateRequired(body.model, "Model")
+      if (modelError) errors.model = modelError
+    }
 
-    const yearError = validateYear(body.year)
-    if (yearError) errors.year = yearError
+    if (body.year && body.year.trim() !== "") {
+      const yearError = validateYear(body.year)
+      if (yearError) errors.year = yearError
+    }
 
-    const plateError = validateLicensePlate(body.licensePlate)
-    if (plateError) errors.licensePlate = plateError
+    if (body.licensePlate && body.licensePlate.trim() !== "") {
+      const plateError = validateLicensePlate(body.licensePlate)
+      if (plateError) errors.licensePlate = plateError
+    }
 
     const serviceError = validateRequired(body.serviceType, "Service type")
     if (serviceError) errors.serviceType = serviceError
@@ -65,10 +72,7 @@ export async function POST(request: NextRequest) {
       },
       vehicle: {
         make: body.make.trim(),
-        model: body.model.trim(),
-        year: body.year.trim(),
-        licensePlate: body.licensePlate.trim().toUpperCase(),
-      },
+       },
       service: {
         type: body.serviceType,
         date: new Date(body.date),

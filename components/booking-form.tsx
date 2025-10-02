@@ -29,9 +29,9 @@ interface BookingData {
 
   // Vehicle Info
   make: string
-  model: string
-  year: string
-  licensePlate: string
+  model?: string
+  year?: string
+  licensePlate?: string
 
   // Service Info
   serviceType: string
@@ -126,14 +126,21 @@ export function BookingForm() {
     const makeError = validateRequired(bookingData.make, "Make")
     if (makeError) newErrors.make = makeError
 
-    const modelError = validateRequired(bookingData.model, "Model")
-    if (modelError) newErrors.model = modelError
+    // Optional validations - only validate if value is provided
+    if (bookingData.model && bookingData.model.trim() !== "") {
+      const modelError = validateRequired(bookingData.model, "Model")
+      if (modelError) newErrors.model = modelError
+    }
 
-    const yearError = validateYear(bookingData.year)
-    if (yearError) newErrors.year = yearError
+    if (bookingData.year && bookingData.year.trim() !== "") {
+      const yearError = validateYear(bookingData.year)
+      if (yearError) newErrors.year = yearError
+    }
 
-    const plateError = validateLicensePlate(bookingData.licensePlate)
-    if (plateError) newErrors.licensePlate = plateError
+    if (bookingData.licensePlate && bookingData.licensePlate.trim() !== "") {
+      const plateError = validateLicensePlate(bookingData.licensePlate)
+      if (plateError) newErrors.licensePlate = plateError
+    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -260,12 +267,8 @@ export function BookingForm() {
               <div>
                 <p className="font-medium text-foreground">Vehicle</p>
                 <p className="text-muted-foreground">
-                  {bookingData.year} {bookingData.make} {bookingData.model}
+                  {bookingData.make}
                 </p>
-              </div>
-              <div>
-                <p className="font-medium text-foreground">License Plate</p>
-                <p className="text-muted-foreground">{bookingData.licensePlate}</p>
               </div>
               <div>
                 <p className="font-medium text-foreground">Service</p>
@@ -416,54 +419,16 @@ export function BookingForm() {
                 className="object-contain rounded-lg"
               />
             </div>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="make">Make</Label>
-                <Input
-                  id="make"
-                  placeholder="Toyota"
-                  value={bookingData.make}
-                  onChange={(e) => updateField("make", e.target.value)}
-                  className={errors.make ? "border-destructive" : ""}
-                />
-                {errors.make && <p className="text-sm text-destructive">{errors.make}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="model">Model</Label>
-                <Input
-                  id="model"
-                  placeholder="Camry"
-                  value={bookingData.model}
-                  onChange={(e) => updateField("model", e.target.value)}
-                  className={errors.model ? "border-destructive" : ""}
-                />
-                {errors.model && <p className="text-sm text-destructive">{errors.model}</p>}
-              </div>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="year">Year</Label>
-                <Input
-                  id="year"
-                  placeholder="2020"
-                  value={bookingData.year}
-                  onChange={(e) => updateField("year", e.target.value)}
-                  className={errors.year ? "border-destructive" : ""}
-                />
-                {errors.year && <p className="text-sm text-destructive">{errors.year}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="licensePlate">License Plate</Label>
-                <Input
-                  id="licensePlate"
-                  placeholder="ABC-1234"
-                  value={bookingData.licensePlate}
-                  onChange={(e) => updateField("licensePlate", e.target.value.toUpperCase())}
-                  className={errors.licensePlate ? "border-destructive" : ""}
-                />
-                {errors.licensePlate && <p className="text-sm text-destructive">{errors.licensePlate}</p>}
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="make">Car Type/Make <span className="text-destructive">*</span></Label>
+              <Input
+                id="make"
+                placeholder="Toyota, Honda, etc."
+                value={bookingData.make}
+                onChange={(e) => updateField("make", e.target.value)}
+                className={errors.make ? "border-destructive" : ""}
+              />
+              {errors.make && <p className="text-sm text-destructive">{errors.make}</p>}
             </div>
 
             <div className="flex justify-between pt-4">

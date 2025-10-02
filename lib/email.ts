@@ -17,10 +17,10 @@ export interface BookingEmailData {
   customerEmail: string
   phone: string
   vehicle: {
-    year: string
     make: string
-    model: string
-    licensePlate: string
+    year?: string
+    model?: string
+    licensePlate?: string
   }
   service: {
     type: string
@@ -166,11 +166,7 @@ function generateBookingConfirmationHTML(data: BookingEmailData): string {
           </div>
           <div class="detail-row">
             <span class="label">Vehicle:</span>
-            <span class="value">${data.vehicle.year} ${data.vehicle.make} ${data.vehicle.model}</span>
-          </div>
-          <div class="detail-row">
-            <span class="label">License Plate:</span>
-            <span class="value">${data.vehicle.licensePlate}</span>
+            <span class="value">${data.vehicle.make}</span>
           </div>
           <div class="detail-row">
             <span class="label">Service:</span>
@@ -225,8 +221,7 @@ BOOKING DETAILS:
 - Booking ID: ${data.bookingId}
 - Customer: ${data.customerName}
 - Phone: ${data.phone}
-- Vehicle: ${data.vehicle.year} ${data.vehicle.make} ${data.vehicle.model}
-- License Plate: ${data.vehicle.licensePlate}
+- Vehicle: ${data.vehicle.make}
 - Service: ${data.service.type}
 - Date & Time: ${data.service.date} at ${data.service.time}
 ${data.service.notes ? `- Notes: ${data.service.notes}` : ''}
