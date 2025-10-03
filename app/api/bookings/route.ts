@@ -94,10 +94,7 @@ export async function POST(request: NextRequest) {
         customerEmail: booking.customer.email,
         phone: booking.customer.phone,
         vehicle: {
-          year: booking.vehicle.year,
           make: booking.vehicle.make,
-          model: booking.vehicle.model,
-          licensePlate: booking.vehicle.licensePlate,
         },
         service: {
           type: booking.service.type,
