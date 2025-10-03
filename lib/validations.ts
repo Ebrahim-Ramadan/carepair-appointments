@@ -21,10 +21,10 @@ export function validatePhone(phone: string): string | null {
   if (!phone.trim()) {
     return "Phone number is required"
   }
-  if (digitsOnly.length < 10) {
-    return "Phone number must be at least 10 digits"
+  if (digitsOnly.length < 8) {
+    return "Phone number must be at least 8 digits"
   }
-  if (digitsOnly.length > 15) {
+  if (digitsOnly.length > 12) {
     return "Phone number is too long"
   }
   return null

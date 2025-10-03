@@ -381,7 +381,7 @@ export function BookingForm() {
               <Input
                 id="phone"
                 type="tel"
-                placeholder="(555) 123-4567"
+                placeholder="555 01387"
                 value={bookingData.phone}
                 onChange={(e) => updateField("phone", e.target.value)}
                 className={errors.phone ? "border-destructive" : ""}
