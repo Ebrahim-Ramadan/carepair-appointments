@@ -140,7 +140,7 @@ function generateBookingConfirmationHTML(data: BookingEmailData): string {
     <body>
       <div class="header">
         <!-- CarePair Logo at Top -->
-        <img src="${process.env.NEXTAUTH_URL}/dark-logo.jpg"  alt="CarePair Auto Service" class="logo" style="max-width: 120px; height: auto; margin-bottom: 15px;" />
+        <img src="https://carepair-kw.vercel.app/logo.jpg"  alt="CarePair Auto Service" class="logo" style="max-width: 120px; height: auto; margin-bottom: 15px;" />
         <div class="success-icon">✓</div>
         <h1>Booking Done!</h1>
         <p>Your appointment has been successfully scheduled</p>
@@ -199,7 +199,7 @@ function generateBookingConfirmationHTML(data: BookingEmailData): string {
       
       <div class="footer">
         <!-- CarePair Logo at Bottom -->
-        <img src="${process.env.NEXTAUTH_URL}/dark-logo.jpg"  alt="CarePair Auto Service" class="footer-logo" style="max-width: 80px; height: auto; margin-bottom: 10px;" />
+        <img src="https://carepair-kw.vercel.app/logo.jpg"  alt="CarePair Auto Service" class="footer-logo" style="max-width: 80px; height: auto; margin-bottom: 10px;" />
         <p><strong>CarePair Auto Service</strong></p>
         <p>Expert service, trusted care</p>
         <p>Contact us: info@carepair.com | (555) 123-4567</p>
