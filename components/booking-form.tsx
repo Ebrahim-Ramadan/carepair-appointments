@@ -12,12 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Check, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
-  validateEmail,
   validatePhone,
   validateName,
-  validateYear,
-  validateLicensePlate,
-  validateRequired,
 } from "@/lib/validations"
 
 interface BookingData {
@@ -26,11 +22,9 @@ interface BookingData {
   lastName: string
   phone: string
 
-
-
   // Service Info
   serviceType: string
-  notes: string
+  notes?: string
 }
 
 interface ValidationErrors {
@@ -104,8 +98,6 @@ export function BookingForm() {
     if (!bookingData.serviceType) {
       newErrors.serviceType = "Service type is required"
     }
-
-
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
