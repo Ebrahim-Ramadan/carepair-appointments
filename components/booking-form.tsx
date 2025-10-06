@@ -165,7 +165,7 @@ if (!validateStep2()) {
           </div>
           <h2 className="mb-2 text-2xl font-bold text-foreground">Appointment Confirmed!</h2>
           <p className="mb-8 text-center text-muted-foreground">
-            We've received your booking request. You will receive a confirmation call soon.
+            We've received your booking request.
           </p>
 
           <div className="w-full max-w-md space-y-4 rounded-lg bg-muted p-6">

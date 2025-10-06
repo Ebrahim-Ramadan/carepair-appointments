@@ -88,42 +88,42 @@ export async function POST(request: NextRequest) {
     const result = await db.collection("appointments").insertOne(booking)
 
     // Send confirmation email
-    try {
-      const emailResult = await sendBookingConfirmationEmail({
-        customerName: `${booking.customer.firstName} ${booking.customer.lastName}`,
-        customerEmail: booking.customer.email,
-        phone: booking.customer.phone,
-        vehicle: {
-          make: booking.vehicle.make,
-        },
-        service: {
-          type: booking.service.type,
-          date: booking.service.date.toLocaleDateString('en-US', { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-          }),
-          time: booking.service.time,
-          notes: booking.service.notes,
-        },
-        bookingId: result.insertedId.toString(),
-      })
+    // try {
+    //   const emailResult = await sendBookingConfirmationEmail({
+    //     customerName: `${booking.customer.firstName} ${booking.customer.lastName}`,
+    //     customerEmail: booking.customer.email,
+    //     phone: booking.customer.phone,
+    //     vehicle: {
+    //       make: booking.vehicle.make,
+    //     },
+    //     service: {
+    //       type: booking.service.type,
+    //       date: booking.service.date.toLocaleDateString('en-US', { 
+    //         weekday: 'long', 
+    //         year: 'numeric', 
+    //         month: 'long', 
+    //         day: 'numeric' 
+    //       }),
+    //       time: booking.service.time,
+    //       notes: booking.service.notes,
+    //     },
+    //     bookingId: result.insertedId.toString(),
+    //   })
 
-      if (!emailResult.success) {
-        console.error('Failed to send confirmation email:', emailResult.error)
-        // Don't fail the entire request, just log the error
-      }
-    } catch (emailError) {
-      console.error('Email sending error:', emailError)
-      // Don't fail the entire request, just log the error
-    }
+    //   if (!emailResult.success) {
+    //     console.error('Failed to send confirmation email:', emailResult.error)
+    //     // Don't fail the entire request, just log the error
+    //   }
+    // } catch (emailError) {
+    //   console.error('Email sending error:', emailError)
+    //   // Don't fail the entire request, just log the error
+    // }
 
     return NextResponse.json(
       {
         success: true,
         bookingId: result.insertedId,
-        message: "Booking created successfully and confirmation email sent",
+        message: "Booking created successfully",
       },
       { status: 201 },
     )
