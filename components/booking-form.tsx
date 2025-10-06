@@ -24,19 +24,12 @@ interface BookingData {
   // Customer Info
   firstName: string
   lastName: string
-  email: string
   phone: string
 
-  // Vehicle Info
-  make: string
-  model?: string
-  year?: string
-  licensePlate?: string
+
 
   // Service Info
   serviceType: string
-  date: string
-  time: string
   notes: string
 }
 
@@ -45,29 +38,24 @@ interface ValidationErrors {
 }
 
 const SERVICE_TYPES = [
-  "Oil Change",
-  "Brake Service",
-  "Tire Rotation",
-  "Engine Diagnostics",
-  "Transmission Service",
-  "Air Conditioning",
-  "Battery Replacement",
-  "General Inspection",
-  "Other",
+  "Full Body Protection",
+  "Hood Protection",
+  "Quarter Panel Protection",
+  "Matte Protection",
+  "Black Matte Protection",
+  "Black Glossy Protection",
+  "Blackout (Trim Color Change)",
+  "Caliper Painting",
+  "Diamond Flooring",
+  "Thermal Tint",
+  "Thermal Tint (Vanet)",
+  "Windshield Protection",
+  "Exterior Polish",
+  "Interior & Exterior Polish",
+  "Protection Removal",
+  "Full Color Change Wrap"
 ]
 
-const TIME_SLOTS = [
-  "08:00 AM",
-  "09:00 AM",
-  "10:00 AM",
-  "11:00 AM",
-  "12:00 PM",
-  "01:00 PM",
-  "02:00 PM",
-  "03:00 PM",
-  "04:00 PM",
-  "05:00 PM",
-]
 
 export function BookingForm() {
   const [step, setStep] = useState(1)
@@ -78,15 +66,8 @@ export function BookingForm() {
   const [bookingData, setBookingData] = useState<BookingData>({
     firstName: "",
     lastName: "",
-    email: "",
     phone: "",
-    make: "",
-    model: "",
-    year: "",
-    licensePlate: "",
     serviceType: "",
-    date: "",
-    time: "",
     notes: "",
   })
 
@@ -110,9 +91,6 @@ export function BookingForm() {
     const lastNameError = validateName(bookingData.lastName, "Last name")
     if (lastNameError) newErrors.lastName = lastNameError
 
-    const emailError = validateEmail(bookingData.email)
-    if (emailError) newErrors.email = emailError
-
     const phoneError = validatePhone(bookingData.phone)
     if (phoneError) newErrors.phone = phoneError
 
@@ -123,50 +101,11 @@ export function BookingForm() {
   const validateStep2 = (): boolean => {
     const newErrors: ValidationErrors = {}
 
-    const makeError = validateRequired(bookingData.make, "Make")
-    if (makeError) newErrors.make = makeError
-
-    // Optional validations - only validate if value is provided
-    if (bookingData.model && bookingData.model.trim() !== "") {
-      const modelError = validateRequired(bookingData.model, "Model")
-      if (modelError) newErrors.model = modelError
-    }
-
-    if (bookingData.year && bookingData.year.trim() !== "") {
-      const yearError = validateYear(bookingData.year)
-      if (yearError) newErrors.year = yearError
-    }
-
-    if (bookingData.licensePlate && bookingData.licensePlate.trim() !== "") {
-      const plateError = validateLicensePlate(bookingData.licensePlate)
-      if (plateError) newErrors.licensePlate = plateError
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const validateStep3 = (): boolean => {
-    const newErrors: ValidationErrors = {}
-
     if (!bookingData.serviceType) {
       newErrors.serviceType = "Service type is required"
     }
 
-    if (!bookingData.date) {
-      newErrors.date = "Date is required"
-    } else {
-      const selectedDate = new Date(bookingData.date)
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-      if (selectedDate < today) {
-        newErrors.date = "Date cannot be in the past"
-      }
-    }
 
-    if (!bookingData.time) {
-      newErrors.time = "Time is required"
-    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -178,14 +117,8 @@ export function BookingForm() {
     }
   }
 
-  const handleContinueStep2 = () => {
-    if (validateStep2()) {
-      setStep(3)
-    }
-  }
-
   const handleSubmit = async () => {
-    if (!validateStep3()) {
+if (!validateStep2()) {
       return
     }
 
@@ -200,7 +133,6 @@ export function BookingForm() {
         },
         body: JSON.stringify({
           ...bookingData,
-          date: bookingData.date ? new Date(bookingData.date).toISOString() : null,
         }),
       })
 
@@ -222,15 +154,8 @@ export function BookingForm() {
     setBookingData({
       firstName: "",
       lastName: "",
-      email: "",
       phone: "",
-      make: "",
-      model: "",
-      year: "",
-      licensePlate: "",
       serviceType: "",
-      date: "",
-      time: "",
       notes: "",
     })
     setStep(1)
@@ -248,8 +173,7 @@ export function BookingForm() {
           </div>
           <h2 className="mb-2 text-2xl font-bold text-foreground">Appointment Confirmed!</h2>
           <p className="mb-8 text-center text-muted-foreground">
-            {"We've received your booking request. A confirmation email has been sent to"}{" "}
-            <span className="font-medium text-foreground">{bookingData.email}</span>
+            We've received your booking request. You will receive a confirmation call soon.
           </p>
 
           <div className="w-full max-w-md space-y-4 rounded-lg bg-muted p-6">
@@ -265,26 +189,10 @@ export function BookingForm() {
                 <p className="text-muted-foreground">{bookingData.phone}</p>
               </div>
               <div>
-                <p className="font-medium text-foreground">Vehicle</p>
-                <p className="text-muted-foreground">
-                  {bookingData.make}
-                </p>
-              </div>
-              <div>
                 <p className="font-medium text-foreground">Service</p>
                 <p className="text-muted-foreground">{bookingData.serviceType}</p>
               </div>
-              <div>
-                <p className="font-medium text-foreground">Date & Time</p>
-                <p className="text-muted-foreground">
-                  {bookingData.date && new Date(bookingData.date).toLocaleDateString('en-US', { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })} at {bookingData.time}
-                </p>
-              </div>
+            
             </div>
             {bookingData.notes && (
               <div>
@@ -306,7 +214,7 @@ export function BookingForm() {
     <div className="space-y-6">
       {/* Progress Steps */}
       <div className="flex items-center justify-center gap-2">
-        {[1, 2, 3].map((s) => (
+        {[1, 2].map((s) => (
           <div key={s} className="flex items-center">
             <div
               className={cn(
@@ -318,7 +226,7 @@ export function BookingForm() {
             >
               {s}
             </div>
-            {s < 3 && (
+            {s < 2 && (
               <div className={cn("h-0.5 w-12 transition-colors md:w-24", step > s ? "bg-primary" : "bg-border")} />
             )}
           </div>
@@ -364,19 +272,6 @@ export function BookingForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="john.doe@example.com"
-                value={bookingData.email}
-                onChange={(e) => updateField("email", e.target.value)}
-                className={errors.email ? "border-destructive" : ""}
-              />
-              {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
-            </div>
-
-            <div className="space-y-2">
               <Label htmlFor="phone">Phone Number</Label>
               <Input
                 id="phone"
@@ -390,59 +285,14 @@ export function BookingForm() {
             </div>
 
             <div className="flex justify-end pt-4">
-              <Button onClick={handleContinueStep1}>Continue to Vehicle Info</Button>
+              <Button onClick={handleContinueStep1}>Continue to Service Details</Button>
             </div>
           </CardContent>
         </Card>
       )}
 
-      {/* Step 2: Vehicle Information */}
+      {/* Step 2: Service & Scheduling */}
       {step === 2 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-                2
-              </span>
-              Vehicle Information
-            </CardTitle>
-            <CardDescription>Tell us about your vehicle</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Car Diagram Visual */}
-            <div className="flex justify-center py-4">
-              <Image
-                src="/car-diagram.png"
-                alt="Car Service Diagram"
-                width={300}
-                height={200}
-                className="object-contain rounded-lg"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="make">Car Type/Make <span className="text-destructive">*</span></Label>
-              <Input
-                id="make"
-                placeholder="Toyota, Honda, etc."
-                value={bookingData.make}
-                onChange={(e) => updateField("make", e.target.value)}
-                className={errors.make ? "border-destructive" : ""}
-              />
-              {errors.make && <p className="text-sm text-destructive">{errors.make}</p>}
-            </div>
-
-            <div className="flex justify-between pt-4">
-              <Button onClick={() => setStep(1)} variant="outline">
-                Back
-              </Button>
-              <Button onClick={handleContinueStep2}>Continue to Service Details</Button>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Step 3: Service & Scheduling */}
-      {step === 3 && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -471,37 +321,7 @@ export function BookingForm() {
               {errors.serviceType && <p className="text-sm text-destructive">{errors.serviceType}</p>}
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="date">Preferred Date</Label>
-                <Input
-                  id="date"
-                  type="date"
-                  value={bookingData.date}
-                  onChange={(e) => updateField("date", e.target.value)}
-                  min={new Date().toISOString().split('T')[0]}
-                  className={errors.date ? "border-destructive" : ""}
-                />
-                {errors.date && <p className="text-sm text-destructive">{errors.date}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="time">Preferred Time</Label>
-                <Select value={bookingData.time} onValueChange={(value) => updateField("time", value)}>
-                  <SelectTrigger id="time" className={errors.time ? "border-destructive" : ""}>
-                    <SelectValue placeholder="Select a time" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TIME_SLOTS.map((time) => (
-                      <SelectItem key={time} value={time}>
-                        {time}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {errors.time && <p className="text-sm text-destructive">{errors.time}</p>}
-              </div>
-            </div>
+        
 
             <div className="space-y-2">
               <Label htmlFor="notes">Additional Notes (Optional)</Label>
