@@ -296,7 +296,7 @@ if (!validateStep2()) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-                3
+                2
               </span>
               Service & Scheduling
             </CardTitle>
