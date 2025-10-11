@@ -7,23 +7,23 @@ export default function Home() {
       <header className="border-b border-border bg-card">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center">
               <Image
                 src="/logo.jpg"
                 alt="CarePair Logo"
-                width={40}
-                height={40}
+                width={60}
+                height={60}
                 className="rounded-lg object-contain dark:hidden"
               />
               <Image
                 src="/dark-logo.jpg"
                 alt="CarePair Logo"
-                width={40}
-                height={40}
+                width={60}
+                height={60}
                 className="rounded-lg object-contain hidden dark:block"
               />
             </div>
-            <span className="text-xl font-semibold text-foreground">CarePair</span>
+            <span className="text-xl font-semibold text-foreground">NintyNine</span>
           </div>
           <nav className="hidden items-center gap-6 md:flex">
             <a href="#" className="text-sm font-medium text-muted-foreground hover:text-foreground">

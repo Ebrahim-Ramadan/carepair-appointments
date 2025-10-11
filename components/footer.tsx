@@ -10,7 +10,7 @@ export function Footer() {
             <div className="flex items-center gap-2">
               <Image
                 src="/logo.jpg"
-                alt="CarePair Logo"
+                alt="NintyNine Logo"
                 width={32}
                 height={32}
                 className="rounded object-contain dark:hidden"
@@ -22,7 +22,7 @@ export function Footer() {
                 height={32}
                 className="rounded object-contain hidden dark:block"
               />
-              <span className="text-lg font-semibold text-foreground">CarePair</span>
+              <span className="text-lg font-semibold text-foreground">NintyNine</span>
             </div>
             <p className="text-sm text-muted-foreground text-center md:text-left">
               Expert car service and maintenance you can trust.
@@ -59,7 +59,7 @@ export function Footer() {
         <div className="mt-8 pt-6 border-t border-border">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} CarePair. All rights reserved.
+              © {new Date().getFullYear()} NintyNine. All rights reserved.
             </p>
             <div className="flex space-x-6">
               <a href="#" className="text-sm text-muted-foreground hover:text-foreground">
