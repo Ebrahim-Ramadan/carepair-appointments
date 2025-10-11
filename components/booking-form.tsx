@@ -32,22 +32,29 @@ interface ValidationErrors {
 }
 
 const SERVICE_TYPES = [
+  // Protection Services
   "Full Body Protection",
-  "Hood Protection",
-  "Quarter Panel Protection",
-  "Matte Protection",
-  "Black Matte Protection",
-  "Black Glossy Protection",
-  "Blackout (Trim Color Change)",
-  "Caliper Painting",
-  "Diamond Flooring",
-  "Thermal Tint",
-  "Thermal Tint (Vanet)",
-  "Windshield Protection",
-  "Exterior Polish",
-  "Interior & Exterior Polish",
-  "Protection Removal",
-  "Full Color Change Wrap"
+  "Half Body Protection",
+  "Quarter Body Protection",
+  "Color Protection",
+  "Other Protection",
+  
+  // Tinting Services
+  "Full Tinting",
+  "Other Tinting",
+  
+  // Painting Services
+  "Other Painting",
+  
+  // Detailing Services
+  "Full Detailing",
+  "Full Clean",
+  "Normal Clean",
+  "Polishing",
+  "Other Detailing",
+  
+  // Repair Services
+  "Other Repair"
 ]
 
 
